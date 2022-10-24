@@ -33,7 +33,7 @@ const App = () => {
       setTimeout(resolve, milliseconds);
     });
   }
-
+  // When any button is pressed, it affects the destinations array this will trigger the effects below.
   useEffect(() => {
     dispatch(calculateRoute(0));
   }, [destinations]);

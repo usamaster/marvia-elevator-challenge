@@ -24,11 +24,11 @@ const initialState: CounterState = {
 export const elevatorSlice = createSlice({
   name: "counter",
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     toggleIsMoving: (state, { payload }) => {
       state.isMoving = payload;
     },
+    // Moves elevator 1 floor up while also picking up, upcalls from levels it passes. For down it is the reverse.
     elevatorUp: (state, action) => {
       state.destinations.push(...state.upCalls);
 
@@ -68,6 +68,7 @@ export const elevatorSlice = createSlice({
     addDestination: (state, { payload }) => {
       state.destinations.push(payload);
     },
+    // Calculates a route based on a sort close to far from current floor.
     calculateRoute: (state, action) => {
       if (state.destinations.length === 0 && state.upCalls.length > 0) {
         state.destinations.push(...state.upCalls);
@@ -83,6 +84,7 @@ export const elevatorSlice = createSlice({
           Math.abs(a - state.currentFloor) - Math.abs(b - state.currentFloor)
       );
     },
+    // Adds elevator calls to upcalls array, and if the elevator is idle it also adds a destination directly
     addUpCall: (state, { payload }) => {
       state.currentFloor !== payload &&
         state.upCalls.push(payload) &&
