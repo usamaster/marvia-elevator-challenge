@@ -1,6 +1,6 @@
 # Marvia elevator coding challenge
 
-Rexux + create-react-app + TypeScript
+Redux + create-react-app + TypeScript
 
 ## Available Scripts
 
