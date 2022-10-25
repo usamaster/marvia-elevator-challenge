@@ -67,15 +67,6 @@ export const elevatorSlice = createSlice({
     },
     addDestination: (state, { payload }) => {
       state.destinations.push(payload);
-
-      if (state.destinations.length === 0 && state.upCalls.length > 0) {
-        state.destinations.push(...state.upCalls);
-      } else if (
-        state.destinations.length === 0 &&
-        state.downCalls.length > 0
-      ) {
-        state.destinations.push(...state.downCalls);
-      }
     },
 
     // Adds elevator calls to upcalls array, and if the elevator is idle it also adds a destination directly
@@ -104,6 +95,14 @@ export const elevatorSlice = createSlice({
     },
     calculateRoute: (state, action) => {
       const destinationsArray = [...state.destinations];
+      if (state.destinations.length === 0 && state.upCalls.length > 0) {
+        state.destinations.push(...state.upCalls);
+      } else if (
+        state.destinations.length === 0 &&
+        state.downCalls.length > 0
+      ) {
+        state.destinations.push(...state.downCalls);
+      }
       state.route = destinationsArray.sort(
         (a, b) =>
           Math.abs(a - state.currentFloor) - Math.abs(b - state.currentFloor)

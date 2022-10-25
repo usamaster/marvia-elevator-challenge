@@ -7,12 +7,20 @@ import {
   toggleIsMoving,
   calculateRoute,
   arrived,
+  addDestination,
 } from "./features/elevator/elevatorSlice";
 import Floor from "./components/Floor";
 
 const App = () => {
-  const { floors, route, currentFloor, isMoving, destinations } =
-    useAppSelector((state) => state.elevator);
+  const {
+    floors,
+    route,
+    currentFloor,
+    isMoving,
+    destinations,
+    upCalls,
+    downCalls,
+  } = useAppSelector((state) => state.elevator);
 
   const dispatch = useAppDispatch();
   const moveElevatorUp = async () => {
