@@ -67,9 +67,7 @@ export const elevatorSlice = createSlice({
     },
     addDestination: (state, { payload }) => {
       state.destinations.push(payload);
-    },
-    // Calculates a route based on a sort close to far from current floor.
-    calculateRoute: (state, action) => {
+
       if (state.destinations.length === 0 && state.upCalls.length > 0) {
         state.destinations.push(...state.upCalls);
       } else if (
@@ -84,6 +82,7 @@ export const elevatorSlice = createSlice({
           Math.abs(a - state.currentFloor) - Math.abs(b - state.currentFloor)
       );
     },
+
     // Adds elevator calls to upcalls array, and if the elevator is idle it also adds a destination directly
     addUpCall: (state, { payload }) => {
       state.currentFloor !== payload &&
@@ -108,6 +107,13 @@ export const elevatorSlice = createSlice({
         (dest) => dest !== state.currentFloor
       );
     },
+    calculateRoute: (state, action) => {
+      const destinationsArray = [...state.destinations];
+      state.route = destinationsArray.sort(
+        (a, b) =>
+          Math.abs(a - state.currentFloor) - Math.abs(b - state.currentFloor)
+      );
+    },
   },
 });
 
@@ -116,10 +122,10 @@ export const {
   elevatorDown,
   addDestination,
   toggleIsMoving,
-  calculateRoute,
   arrived,
   addUpCall,
   addDownCall,
+  calculateRoute,
 } = elevatorSlice.actions;
 
 export default elevatorSlice.reducer;

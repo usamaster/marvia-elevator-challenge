@@ -12,6 +12,12 @@ const Button = ({ level }: floor) => {
     (state) => state.elevator
   );
 
+  const moveElevator = async () => {
+    if (currentFloor !== level) {
+      dispatch(addDestination(level));
+    }
+  };
+
   return (
     <div>
       {destinations.indexOf(level) !== -1 ? (
@@ -20,9 +26,7 @@ const Button = ({ level }: floor) => {
         <div
           className="button"
           onClick={() => {
-            if (currentFloor !== level) {
-              dispatch(addDestination(level));
-            }
+            moveElevator();
           }}
         >
           {level}

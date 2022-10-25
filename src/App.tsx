@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./elevator.css";
 import { useAppSelector, useAppDispatch } from "./app/hooks";
 import {
@@ -11,11 +11,10 @@ import {
 import Floor from "./components/Floor";
 
 const App = () => {
-  const { floors, currentFloor, route, isMoving, destinations } =
+  const { floors, route, currentFloor, isMoving, destinations } =
     useAppSelector((state) => state.elevator);
 
   const dispatch = useAppDispatch();
-
   const moveElevatorUp = async () => {
     await delay(1000);
     dispatch(elevatorUp(0));
@@ -33,27 +32,23 @@ const App = () => {
       setTimeout(resolve, milliseconds);
     });
   }
-  // When any button is pressed, it affects the destinations array this will trigger the effects below.
-  useEffect(() => {
+
+  if (destinations.length > 0 && route.length === 0) {
     dispatch(calculateRoute(0));
-  }, [destinations]);
+  }
 
-  useEffect(() => {
-    if (route[0] > currentFloor && !isMoving) {
-      dispatch(toggleIsMoving(true));
-      moveElevatorUp();
-    }
-    if (route[0] < currentFloor && !isMoving) {
-      dispatch(toggleIsMoving(true));
-      moveElevatorDown();
-    }
-  }, [route]);
-
-  useEffect(() => {
-    destinations.indexOf(currentFloor) !== -1 && dispatch(arrived(0));
+  if (route[0] > currentFloor && !isMoving) {
+    dispatch(toggleIsMoving(true));
+    moveElevatorUp();
+  }
+  if (route[0] < currentFloor && !isMoving) {
+    dispatch(toggleIsMoving(true));
+    moveElevatorDown();
+  }
+  if (destinations.indexOf(currentFloor) !== -1) {
+    dispatch(arrived(0));
     dispatch(calculateRoute(0));
-  }, [currentFloor]);
-
+  }
   return (
     <div className="nav-center">
       <div className="elevator">
